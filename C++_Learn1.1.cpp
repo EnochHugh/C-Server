@@ -1,6 +1,6 @@
 //  The Notes Created by Z-Tech on 2017/2/17.
 //  All Codes Boot on 《C++ Primer Plus》V6.0
-//  OS：MacOS 10.12.4
+//  OS：MacOS 10.12.4&10.13.6
 //  Translater：clang/llvm8.0.0 &g++4.2.1
 //  Editer：iTerm 2&Sublime text 3
 //  IDE: Xcode8.2.1&Clion2017.1
