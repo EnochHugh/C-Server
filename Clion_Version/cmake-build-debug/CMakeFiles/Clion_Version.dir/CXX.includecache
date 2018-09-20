@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/enochhugh/Documents/Z_C++/Clion_Version/Main.cpp
+stdio.h
+-
+
+/Users/enochhugh/Documents/Z_C++/Clion_Version/SubFunction.cpp
+
+/Users/enochhugh/Documents/Z_C++/Clion_Version/TestCode.cpp
+
