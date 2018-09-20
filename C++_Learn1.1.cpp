@@ -6,7 +6,7 @@
 //  IDE: Xcode8.2.1&Clion2017.1
 
 //P2.1
-#include <iostream>//Hello，C++
+#include <iostream>//Hello，C++11
 int main()
 {
     using namespace std;
