@@ -1,0 +1,413 @@
+							C++常用指令
+
+1.手动编译：
+单文件
+g++ test.cpp -o myname
+./ myname
+多文件
+g++ test1.cpp test2.cpp -o myname
+./ myname
+指定C++11标准
+g++ -g -Wall -std=c++11 main.cpp
+
+2.声明typedef
+typedef int dog;//支持安全检查，作用域块内
+//增加dog为int的别名
+#define dog int* //不支持检查，无作用域
+#define WIDTH 5//#undef WIDTH可取消
+
+3.枚举enum
+enum clolr {red,green,blue} c;
+c = blue;
+enum color { red, green=5, blue };//blue为6，red仍为0
+
+4.同名时，使用::引用全局版变量，
+::count//否则引用局部变量
+
+5.宽字符常量
+ L'x' 可存储于wchar_t类型的变量中
+
+
+6.转义空格\t
+可以输出空格
+
+7.explicit，
+防止构造函数的隐式转换发生;
+Test t=12;//试图隐式转换，失败
+Test t(12);//显示调用，成功
+
+8.static存储类
+应用局部固定作用域内的值；
+应用全局则将变量限制于该声明文件中。
+
+
+9.thread_local 存储类
+仅应用于数据声明和定义；不能用于函数声明或定义
+
+10.^是异或，~是补码计算，<<是左移，>>右移
+A   = 0011 1100
+B   = 0000 1101
+A&B = 0000 1100
+A|B = 0011 1101
+A^B = 0011 0001
+~A  = 1100 0011
+A>>2= 0000 1111
+A<<2= 1111 0000
+A<<= 2//等同于 A=A<<2; 
+
+11.while (x --> 0);
+其实等价于while( (x--) > 0 );
+
+
+12.for范围循环
+int my_array[5] = {1, 2, 3, 4, 5};
+for (int &x : my_array){sth.}
+
+
+13.Lambda 函数
+[capture](参数) mutable->返回值{body}//公式
+auto add_x = [x](int a) mutable { x *= 2; return a + x; };//示例
+[](int x, int y){ return x < y ; }//标准示例
+[]{ ++global_x; }//无参数示例
+[]{};//最简单的示例
+
+auto Myname = [] { cout << "sth" << endl; };
+Myname();//实用示例
+
+注意:
+Lambda 函数总是一个 const 函数，mutable 可以取消其常量性。
+在使用该修饰符时，参数列表不可省略（即使参数为空）
+[]      // 沒有定义任何变量。使用未定义变量会引发错误。
+[x, &y] // x以传值方式传入（默认），y以引用方式传入。
+[&]     // 任何被使用到的外部变量都隐式地以引用方式加以引用。
+[=]     // 任何被使用到的外部变量都隐式地以传值方式加以引用。
+[&, x]  // x显式地以传值方式加以引用。其余变量以引用方式加以引用。
+[=, &z] // z显式地以引用方式加以引用。其余变量以传值方式加以引用。
+
+
+14.对于[=]或[&]的形式，Lambda 表达式可以直接使用 this 指针。
+但对于[]的形式，如果要使用 this 指针，必须显式传入:
+[this]() { this->someFunc(); }();
+
+
+15.C++随机数
+如要产生 [m,n] 范围内的随机数num，可用：int num=rand()%(n-m+1)+m;
+（即 rand()%[区间内数的个数]+[区间起点值]）
+#include <time.h>
+srand((unsigned) time(NULL)); /*播时间秒数种子*/
+ for(i = 0; i < 10; i++)
+    {
+        number[i] = rand() % 100; /*产生100以内的随机整数*/
+        printf("%d ", number[i]);
+    }
+
+
+16.二维数组
+int a[3][4] = {  
+ {0, 1, 2, 3} ,   /*  初始化索引号为 0 的行 */
+ {4, 5, 6, 7} ,   /*  初始化索引号为 1 的行 */
+ {8, 9, 10, 11}   /*  初始化索引号为 2 的行 */
+};
+等价于int a[3][4] = {0,1,2,3,4,5,6,7,8,9,10,11};
+输出循环：
+ int a[i][j] = {};               
+   for ( int i = 0; i < 5; i++ )
+      for ( int j = 0; j < 2; j++ )
+      {
+         cout << "a[" << i << "][" << j << "]: ";
+         cout << a[i][j]<< endl;
+      }
+
+
+17.数组指针
+*(Arryname + x)等价于Arryname[x]
+注意:
+C++ 中，将 char * 或 char[] 传递给 cout 进行输出，
+结果会是整个字符串，如果想要获得字符串的地址（第一个字符的内存地址），
+可使用以下方法：
+强制转化为其他指针（非 char*）；
+可以是 void *，int *，float *， double * 等；
+* 使用 &s[0] 不能输出 s[0]（首字符）的地址：
+因为 &s[0] 将返回 char*，对于 char*（char 指针），
+cout 会将其作为字符串来处理，向下查找字符并输出直到字符结束 *
+
+18.const char a4[7] = "runoob";//最后一位是'\0'
+//直接初始化char数组是特殊的,这种初始化数组末尾字符以一个null结尾
+
+
+19. vector动态向量容器
+ vector<int> vec;
+//可使用诸如vec.size(),vec.push_back(i)
+2维:
+vector <int *> a 
+3维:
+vector <int **> a 
+使用数组对其赋值：
+第一种：vector<int> v( a, a+sizeof(a)/sizeof(a[0]) );
+第二种：
+int a[]={1,2,3,4,5,6,7,8,9};
+typedef vector<int> vec_int;
+vec_int vecArray(a,a+9);
+
+20.cout<<setfill('*')<<setw(5)<<'a'<<endl;
+输出：****a
+//setw(int n)用来控制输出间隔,（n-1个空格）
+
+21.动态分配数组
+int MAX=10;
+int *array=new int[MAX]{1,2,3};
+delete[] array;
+
+
+22.获取数组长度遍历数组：
+char* x[5] = { (char*)"1", (char*)"2", (char*)"3", (char*)"4", "5" };
+for (int i = 0; i < sizeof(x) / sizeof(char*); i++)
+cout << x[i] << "\n";
+
+
+23.字符串长度
+cout<<strlen("123")<<endl;   //返回 3
+cout<<sizeof("123")<<endl;   //返回 4
+string s = "123";
+cout<<s.size()<<endl;        //返回 3
+char str[20]="0123456789";
+int a=strlen(str); // a=10;
+int b=sizeof(str); // 而 b=20;
+
+
+24.在 C++ 里参数传递数组永远都是传递指向数组首元素的指针，
+编译器不知道数组的大小；如果想在函数内知道数组的大小， 这样做：
+进入函数后用memcpy拷贝出来，长度由另一个形参传进去：
+fun(unsiged char *p1, int len)
+{
+    unsigned char* buf = new unsigned char[len+1]
+    memcpy(buf, p1, len);
+}
+
+25.检查空指针一般可直接使用if(ptr)语句；
+MacOS中空指针为8字节，ptr++理论上移动8字节；
+使用指针控制多用while循环，而i++控制多用for循环；
+比如：while ( ptr <= &var[MAX - 1] );
+还需要注意数组名虽然是指针，不能自增减--、++
+比如：var++不可行，但是*(var+2)可行
+
+26.指针数组
+int *ptr[MAX];//指针数组
+int *(ptr[3]);//指针数组
+用法：ptr[i] = &var[i];
+而int (*ptr)[3];//是数组指针！！
+
+
+
+27.常量引用不允许绑定非对象，但是使用const除外：
+const int &r1 = MAX;//可行
+等价于：
+const int temp = dval;  
+const int &ri = temp; 
+
+
+28.常量指针(const位于*左侧)：
+int const* p;  const int* p;
+//指针p可变，所对应常量内容*p不可修改
+
+指针常量(const位于*右侧)：
+int * const p;//
+//指针p不可变，所对应的内容*p可修改
+
+指向常量的常指针：(总之他们都适用就近原则)
+const int * const p;
+//均不可变
+
+
+29.new出来的指针delete后，一定要置nullptr，
+否则成为野指针非常危险；不能返回函数内部new分配的内存的引用，
+目的是防止内存泄露。
+
+
+
+30.获取系统当前时间
+#include <ctime>
+time_t now = time(0);
+char* dt = ctime(&now);
+cout << "本地日期和时间：" << dt << endl;
+tm *gmtm = gmtime(&now);
+dt = asctime(gmtm);
+cout << "UTC 日期和时间："<< dt << endl;
+
+
+
+31.cerr<<非缓冲，立即会被输出，用于处理错误消息；
+clog<<缓冲，溢出或刷新才输出，用于处理日志消息。
+
+
+
+32.结构体指针
+struct Books *struct_pointer;
+struct_pointer = &Book1;
+struct_pointer->title;//对象用.指针用->
+示例：
+printBook( &Book1 );//传地址
+void printBook( struct Books *book ){}
+
+
+33.typedef和结构体简化
+typedef struct Books{sth.}Books;
+之后，即可直接Books Book1, Book2;
+
+
+
+34.typedef和指针
+typedef long int * sex99;
+sex99 x,y,z;//三个都将成为指针
+
+
+35.类和结构体的区别：
+（1）class 默认的成员访问权限是private，
+	而 struct 中则是 public 的。
+（2）从 class 继承默认是 private 继承，
+	而从 struct 继承默认是 public 继承。
+C的结构体不可有函数，C++的结构体可以有函数。
+
+
+36.关于继承
+1.private 成员只能被本类成员（类内）和友元访问，不能被派生类访问；
+2.protected 成员可以被派生类访问
+
+
+37.C++ 初始化类成员时，是按照声明的顺序初始化的，
+而不是按照出现在初始化列表中的顺序；
+初始化列表的顺序要跟你在类声明的顺序要一致。
+
+
+
+38.必须定义拷贝构造函数的情况：有的类有一个数据成员是指针，
+或者是有成员表示在构造函数中分配的其他资源，这两种情况下都必须定义拷贝构造函数。
+显然，以下情况都会调用拷贝构造函数：
+（1）一个对象以值传递的方式传入函数体
+（2）一个对象以值传递的方式从函数返回
+（3）一个对象需要通过另外一个对象进行初始化。
+
+
+
+39.友元函数和静态成员函数都没有this指针；
+初始化是赋一个初始值，而定义是分配内存。
+
+
+
+40.struct说明
+C++ 中的 struct 对 C 中的 struct 进行了扩充，
+它已经不再只是一个包含不同数据类型的数据结构。
+struct 能包含成员函数吗？ 能！
+struct 能继承吗？ 能！！
+struct 能实现多态吗？ 能！！！
+那它和 class 还能有什么区别？
+最本质的一个区别就是默认的访问控制，体现在两个方面：
+默认的继承访问权限和数据访问控制：struct是public的，class是private的。
+
+
+41.不可重载的运算符：
+.：成员访问运算符
+.*, ->*：成员指针访问运算符
+::：域运算符
+sizeof：长度运算符
+?:：条件运算符
+#： 预处理符号
+
+
+42.基类中定义纯虚函数：
+virtual void funtional() = 0;
+在有动态分配堆上内存的时候，析构函数必须是虚函数，但没有必要是纯虚的；
+友元不是成员函数，只有成员函数才可以是虚拟的，因此友元不能是虚拟函数。
+析构函数应当是虚函数，将调用相应对象类型的析构函数。
+
+
+43.当基类中没有定义虚函数时，其长度=数据成员长度；
+派生类长度=自身数据成员长度+基类继承的数据成员长度；
+
+当基类中定义虚函数后，其长度=数据成员长度+虚函数表的地址长度；
+派生类长度=自身数据成员长度+基类继承的数据成员长度+虚函数表的地址长度。
+
+包含一个虚函数和几个虚函数的类的长度增量为0。
+含有虚函数的类只是增加了一个指针用于存储虚函数表的首地址。
+派生类与基类同名的虚函数在VTABLE中有相同的索引号（或序号）。
+
+
+44.读写文件
+ofstream outfile;//写模式打开文件
+outfile.open("file.dat", ios::out | ios::trunc );//截断式写入
+outfile << data << endl;
+
+fstream  afile;
+afile.open("file.dat", ios::out | ios::in );//读写
+//第一个参数是位置和名称，第二个为具体模式参数
+
+ifstream infile; //以度模式打开
+infile.open("afile.dat");  
+infile >> data;//读取数据
+infile.close();//关闭文件
+
+
+
+45.文件位置指针
+// 定位到 fileObject 的第 n 个字节（假设是 ios::beg）
+fileObject.seekg( n );
+ 
+// 把文件的读指针从 fileObject 当前位置向后移 n 个字节
+fileObject.seekg( n, ios::cur );
+ 
+// 把文件的读指针从 fileObject 末尾往回移 n 个字节
+fileObject.seekg( n, ios::end );
+ 
+// 定位到 fileObject 的末尾
+fileObject.seekg( 0, ios::end );
+
+
+
+46.复制文件test.txt到test1.txt
+void file_copy(void)
+{
+    char data[100];
+    ifstream infile;
+    ofstream outfile;
+    infile.open("test.txt");
+    outfile.open("test_1.txt");//分别打开两个文件
+    cout << "copy from test.txt to test_1.txt" << endl;
+    while (!infile.eof())//判断到达文件尾条件
+    {
+        infile >> data;//读入数组
+        cout << data << endl;
+        outfile << data << endl;//将数组写入文件
+    }
+    infile.close();//分别关闭文件对象
+    outfile.close();
+}
+
+
+47.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
